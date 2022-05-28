@@ -18,6 +18,7 @@ return new class extends Migration
             $table->double('prix');
             $table->foreignId('duree_location_id')->constrained('duree_locations');
             $table->foreignId('article_id')->constrained('articles');
+            $table->timestamps();
 
         });
 
@@ -32,6 +33,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('tarifications',function(Blueprint $table){
+            Schema::disableForeignKeyConstraints();
             $table->dropForeign(['duree_location_id','article_id']);
         });
         Schema::dropIfExists('tarifications');

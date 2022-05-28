@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('statut_location_id')->constrained('statut_locations');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('client_id')->constrained('clients');
+            $table->timestamps();
 
         });
 
@@ -34,6 +35,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('locations',function(Blueprint $table){
+            Schema::disableForeignKeyConstraints();
             $table->dropForeign(['statut_location_id','user_id','client_id']);
         });
         Schema::dropIfExists('locations');

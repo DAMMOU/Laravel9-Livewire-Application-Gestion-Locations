@@ -31,6 +31,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('propriete_articles',function(Blueprint $table){
+            Schema::disableForeignKeyConstraints();
             $table->dropForeign(['type_article_id']);
         });
         Schema::dropIfExists('propriete_articles');

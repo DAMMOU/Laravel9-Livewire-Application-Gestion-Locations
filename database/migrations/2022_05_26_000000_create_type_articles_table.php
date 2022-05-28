@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('duree_locations', function (Blueprint $table) {
+        Schema::create('type_articles', function (Blueprint $table) {
             $table->id();
-            $table->string('libelle');
-            $table->time('valeurEnHeure');
+            $table->string('nom')->unique();
         });
     }
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('duree_locations');
+        Schema::dropIfExists('type_articles');
     }
 };

@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('noSerie');
             $table->boolean('estDisponible');
             $table->string('imageUrl');
+            $table->foreignId('type_article_id')->constrained();
             $table->timestamps();
-            $table->foreignId('type_article_id')->constrained('type_articles');
         });
         Schema::enableForeignKeyConstraints();
     }
@@ -33,6 +33,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('articles',function(Blueprint $table){
+            Schema::disableForeignKeyConstraints();
             $table->dropForeign(['type_article_id']);
         });
         Schema::dropIfExists('articles');
