@@ -16,4 +16,5 @@ class ProprieteArticle extends Model
     public function article(){
         return $this->belongsToMany(Article::class,'article_propriete','article_id','article_propriete_id');
     }
+    
 }

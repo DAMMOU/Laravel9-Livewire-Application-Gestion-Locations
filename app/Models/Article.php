@@ -17,6 +17,7 @@ class Article extends Model
     public function tarification(){
         return $this->hasMany(Tarification::class);
      }
+     
 
      public function locations(){
         return $this->belongsToMany(Location::class,'article_location','article_id','location_id');

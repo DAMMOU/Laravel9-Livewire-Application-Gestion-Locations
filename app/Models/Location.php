@@ -24,7 +24,6 @@ class Location extends Model
     public function paiements(){
         return $this->hasMany(Paiement::class);
     }
-
     
     public function articles(){
         return $this->belongsToMany(Article::class,'article_location','location_id','article_id');

@@ -12,4 +12,5 @@ class Role extends Model
     public function users(){
         return $this->belongsToMany(Article::class,'user_role','role_id','user_id');
      }
+     
 }

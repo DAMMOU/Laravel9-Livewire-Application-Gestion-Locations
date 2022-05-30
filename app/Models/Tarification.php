@@ -15,4 +15,5 @@ class Tarification extends Model
     public function article(){
         return $this->belongsTo(StatutLocation::class,'statut_location_id','id');
     }
+    
 }
