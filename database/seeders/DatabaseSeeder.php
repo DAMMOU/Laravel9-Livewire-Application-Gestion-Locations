@@ -38,10 +38,10 @@ class DatabaseSeeder extends Seeder
         Article::factory()->count(10)->create();
         Location::factory()->count(10)->create();
         
-        Tarification::factory()->count(10)->create();
-        $user_permission = UserPermission::factory()->count(10)->create();
-        ArticleLocation::factory()->count(10)->create();
-        UserRole::factory()->count(10)->create();
+        //Tarification::factory()->count(10)->create();
+        //UserPermission::factory()->count(10)->create();
+        //ArticleLocation::factory()->count(10)->create();
+        //UserRole::factory()->count(10)->create();
 
         
     }
