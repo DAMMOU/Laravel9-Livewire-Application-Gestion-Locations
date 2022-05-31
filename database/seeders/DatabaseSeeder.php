@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TypeArticleTableSeeder::class);
         User::factory()->count(10)->create();
         Client::factory()->count(10)->create();
-        Article::factory()->count(10)->create();
+        Article::factory()->count(20)->create();
         Location::factory()->count(10)->create();
         
         //Tarification::factory()->count(10)->create();

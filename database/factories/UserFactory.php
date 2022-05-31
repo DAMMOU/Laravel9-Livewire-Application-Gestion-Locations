@@ -20,8 +20,8 @@ class UserFactory extends Factory
         $sexe = array('F', 'M');
         $pieceIdentite = array('CIN','Passport','Permis');
         return [
-            'nom' => $this->faker->lastName(),
-            'prenom' => $this->faker->lastName(),
+            'name' => $this->faker->lastName(),
+            'prenom' => $this->faker->firstName(),
             'sexe' => $sexe[rand(0,1)],
             'telephone1' => $this->faker->unique()->phoneNumber,
             'telephone2' => $this->faker->unique()->phoneNumber,

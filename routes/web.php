@@ -2,7 +2,9 @@
 
 use App\Models\Article;
 use App\Models\TypeArticle;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -15,14 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
+Auth::routes();
 
-Route::get('/articles', function () {
-    return Article::all();
-});
-Route::get('/type_articles', function () {
-    return TypeArticle::with('article')->get();
-});
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
