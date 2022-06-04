@@ -17,7 +17,7 @@
 
 
 
-    <script src={{mix('js/app.js')}} ></script>ss
+    <script src={{mix('js/app.js')}} ></script>
     @livewireScripts
 
 </body>

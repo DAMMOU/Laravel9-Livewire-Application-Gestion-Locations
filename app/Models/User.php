@@ -46,12 +46,20 @@ class User extends Authenticatable
         return $this->hasMany(Paiement::class);
     }
 
-    public function users(){
+    public function roles(){
         return $this->belongsToMany(User::class,'user_role','user_id','role_id');
      }
 
-     public function permissions(){
+    public function permissions(){
         return $this->belongsToMany(Permission::class,'user_permission','user_id','permission_id');
+    }
+
+    public function hasRole($role){
+        return $this->roles()->where('name',$role)->first()!== null;
+    }
+
+    public function hasAnyRoles($roles){
+        return $this->roles()->whereIn('name',$roles)->first()!== null;
     }
     
 }
