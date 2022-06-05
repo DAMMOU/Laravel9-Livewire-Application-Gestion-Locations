@@ -9,11 +9,12 @@ class Tarification extends Model
 {
     use HasFactory;
 
-    public function duree_location(){
+    public function dureeLocation(){
         return $this->belongsTo(DureeLocation::class,'duree_location_id','id');
     }
+    
     public function article(){
-        return $this->belongsTo(StatutLocation::class,'statut_location_id','id');
+        return $this->belongsTo(Article::class);
     }
     
 }

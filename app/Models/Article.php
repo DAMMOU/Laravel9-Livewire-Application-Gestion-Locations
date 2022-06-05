@@ -9,9 +9,11 @@ class Article extends Model
 {
     use HasFactory;
     
-    
-    public function type_articles(){
-       return $this->belongsTo(TypeArticle::class,'type_article','id');
+   protected $table='articles';
+
+   
+    public function type(){
+       return $this->belongsTo(TypeArticle::class,'type_article_id','id');
     }
 
     public function tarification(){
@@ -24,6 +26,6 @@ class Article extends Model
      }
 
      public function proprietes(){
-      return $this->belongsToMany(ProprieteArticle::class,'article_propriete','article_propriete_id','article_id');
+      return $this->belongsToMany(ProprieteArticle::class,'article_propriete_articl','article_id','propriete_article_id');
   }
 }

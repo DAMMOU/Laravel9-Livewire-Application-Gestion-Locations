@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class TypeArticle extends Model
 {
     use HasFactory;
+
     
-    public function article(){
-        return $this->hasMany(Article::class);
+    public function articles(){
+        return $this->hasMany(Article::class,'type_article_id','id');
     }
     
 }

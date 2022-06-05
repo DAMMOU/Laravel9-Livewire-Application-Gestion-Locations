@@ -18,7 +18,7 @@ class Location extends Model
     }
 
     public function statut(){
-        return $this->belongsTo(StatutLocation::class);
+        return $this->belongsTo(StatutLocation::class,'statur_location_id','id');
     }
 
     public function paiements(){

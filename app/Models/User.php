@@ -47,7 +47,7 @@ class User extends Authenticatable
     }
 
     public function roles(){
-        return $this->belongsToMany(User::class,'user_role','user_id','role_id');
+        return $this->belongsToMany(Role::class,'user_role','user_id','role_id');
      }
 
     public function permissions(){
@@ -55,7 +55,7 @@ class User extends Authenticatable
     }
 
     public function hasRole($role){
-        return $this->roles()->where('name',$role)->first()!== null;
+        return $this->roles()->where('nom',$role)->first()!== null;
     }
 
     public function hasAnyRoles($roles){

@@ -2,6 +2,7 @@
 
 use App\Models\Article;
 use App\Models\TypeArticle;
+use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/habilitations/utilisateurs',[App\Http\Controllers\UserController::class, 'index'])
+->name('users')->Middleware('auth.admin');

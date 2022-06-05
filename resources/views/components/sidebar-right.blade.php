@@ -6,7 +6,10 @@
                 <img class="profile-user-img img-fluid img-circle" src="{{photo()}}" alt="User profile picture">
             </div>
             <h3 class="profile-username text-center ellipsis">{{lastName()}}</h3>
-            <p class="text-muted text-center">Role</p>
+            @foreach ( auth()->user()->roles as $role )
+                <p class="text-muted text-center">Role :{{$role->nom}}</p>
+            @endforeach
+            
             <ul class="list-group gb-dark mb-3">
                 <li class="list-group-item">
                     <a class="d-flex align-items-center">

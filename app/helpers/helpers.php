@@ -15,3 +15,5 @@ function fullName(){
 function photo(){
     return auth()->user()->photo;
 }
+
+

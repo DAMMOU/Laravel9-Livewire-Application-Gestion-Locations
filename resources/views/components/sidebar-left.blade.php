@@ -30,6 +30,7 @@
                             <p>Accuiel</p>
                         </a>
                     </li>
+                    
                     @can('manager')
                     <li class="nav-item menu-open">
                         <a href="#" class="nav-link active">
@@ -131,7 +132,7 @@
                     </li>
 
                     @endcan
-
+                    
 
 
                     
