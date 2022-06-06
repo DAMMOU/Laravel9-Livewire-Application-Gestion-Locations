@@ -16,4 +16,17 @@ function photo(){
     return auth()->user()->photo;
 }
 
+function OpenMenu($route){
+    if( request()->route()->getName()=== $route ){
+        return 'menu-open active';
+    }
+    return '';
+}
+function active($route){
+    if( request()->route()->getName()=== $route ){
+        return 'active';
+    }
+    return '';
+}
+
 

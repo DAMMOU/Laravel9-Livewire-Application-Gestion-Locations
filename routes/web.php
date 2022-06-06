@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\Utilisateurs;
 use App\Models\Article;
 use App\Models\TypeArticle;
 use GuzzleHttp\Middleware;
@@ -24,5 +25,20 @@ Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/habilitations/utilisateurs',[App\Http\Controllers\UserController::class, 'index'])
-->name('users')->Middleware('auth.admin');
+
+Route::group([
+    'middleware' => ['auth','auth.admin'],
+    'as' => 'admin.',
+],function(){
+
+    Route::group([
+        'prefix' => 'habilitations',
+        'as' => 'habilitations.',
+
+    ],function(){
+        //Route::get('/utilisateurs',[App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+        Route::get('/utilisateurs',Utilisateurs::class)->name('users.index');
+    });
+});
+
+
