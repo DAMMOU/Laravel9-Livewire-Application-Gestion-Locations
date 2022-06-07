@@ -33,10 +33,12 @@ class DatabaseSeeder extends Seeder
         $this->call(PermissionTableSeeder::class);
         $this->call(DureeLocationTableSeeder::class);
         $this->call(TypeArticleTableSeeder::class);
+        
         User::factory()->count(10)->create();
         Client::factory()->count(10)->create();
         Article::factory()->count(20)->create();
         Location::factory()->count(10)->create();
+        $this->call(UserRoleTableSeeder::class);
         
         //Tarification::factory()->count(10)->create();
         //UserPermission::factory()->count(10)->create();

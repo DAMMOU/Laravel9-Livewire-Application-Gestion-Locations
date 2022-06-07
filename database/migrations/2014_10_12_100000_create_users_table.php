@@ -18,13 +18,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('prenom');
             $table->char('sexe');
-            $table->string('telephone1')->unique();
-            $table->string('telephone2')->unique();
+            $table->string('telephone1');
+            $table->string('telephone2')->nullable();
             $table->string('pieceIdentite');
             $table->string('numeroPieceIdentite');
-            $table->string('photo');
+            $table->string('photo')->nullable();
             $table->string('email')->unique();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->timestamps();
         });
     }
