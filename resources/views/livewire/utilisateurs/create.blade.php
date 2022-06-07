@@ -128,7 +128,7 @@
             toast: true,
             title: event.detail.message || 'Opération effectuée avec succè!',
             showConfirmButton: false,
-            timer: 4000
+            timer: 3000
         })
     })
 </script>

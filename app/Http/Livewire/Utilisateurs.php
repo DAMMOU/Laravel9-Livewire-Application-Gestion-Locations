@@ -14,7 +14,7 @@ class Utilisateurs extends Component
 
     public $isBtnAddClicked = false;
 
-    public $newUser =[];
+    public $newUser = [];
 
     protected $rules = [
         'newUser.name' => 'required',
@@ -25,7 +25,6 @@ class Utilisateurs extends Component
         'newUser.telephone2' => 'numeric',
         'newUser.pieceIdentite' => 'required',
         'newUser.numeroPieceIdentite' => 'numeric',
-        
     ];
 
     //protected $messages = [
@@ -38,20 +37,23 @@ class Utilisateurs extends Component
     //];
     public function render()
     {
-        return view('livewire.utilisateurs.index',[
+        return view('livewire.utilisateurs.index', [
             'users' => User::latest()->paginate(6),
         ])
-        ->extends('layouts.master')
-        ->section('contenu');
+            ->extends('layouts.master')
+            ->section('contenu');
     }
 
-    public function goToAddUser(){
+    public function goToAddUser()
+    {
         $this->isBtnAddClicked = true;
     }
-    public function goToListUsers(){
+    public function goToListUsers()
+    {
         $this->isBtnAddClicked = false;
     }
-    public function addUser(){
+    public function addUser()
+    {
 
         $validationAttributes = $this->validate();
         $validationAttributes["newUser"]['password'] = 'password';
@@ -60,7 +62,31 @@ class Utilisateurs extends Component
 
         $this->newUser = [];
 
-        $this->dispatchBrowserEvent('showSuccessMessage',
-            ['message' => 'Utilisateur créé avec succès!']);
+        $this->dispatchBrowserEvent(
+            'showSuccessMessage',
+            ['message' => 'Utilisateur créé avec succès!']
+        );
+    }
+
+    public function confirmDelete($name,$id)
+    {
+        $this->dispatchBrowserEvent(
+            'showConfirmMessage', [
+            'message' =>[
+                'text' => "Vous etes sur sur le point de supprimer $name de la liste des utilisateurs voules-vous continuer?",
+                'title' => "Vous etes sur?",
+                'icon' => "warning",
+                'data' => [
+                'user_id' => $id,
+                    ]
+        ]]);
+    }
+
+    public function deleteUser($id){
+        User::destroy($id);
+        $this->dispatchBrowserEvent(
+            'showSuccessMessage',
+            ['message' => 'Utilisateur supprimé avec succès!']
+        );
     }
 }
