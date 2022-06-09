@@ -58,7 +58,7 @@
                                     <span class="tag tag-warning">{{$user->created_at->diffForHumans()}}</span>
                                 </td>
                                 <td class="text-center">
-                                <button class="btn btn-link" ><i class="far fa-edit"></i> </button>
+                                <button class="btn btn-link" wire:click="goToEdittUser({{$user->id}})"><i class="far fa-edit"></i> </button>
                                 <button class="btn btn-link" wire:click="confirmDelete('{{$user->name}} {{$user->prenom}}',{{$user->id}})"><i class="far fa-trash-alt"></i> </button>
                                 </td>
                             </tr>
@@ -95,6 +95,7 @@
                    @this.deleteUser(event.detail.message.data.user_id)
                 }
         })
+        
         window.addEventListener('showSuccessMessage',event=>{
         Swal.fire({
             postion: 'top-end',

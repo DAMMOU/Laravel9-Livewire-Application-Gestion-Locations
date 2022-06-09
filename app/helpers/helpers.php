@@ -1,5 +1,11 @@
 <?php
 
+
+define("PAGELIST","liste");
+define("PAGECREATE","create");
+define("PAGEEDIT","edit");
+
+
 function lastName(){
     return auth()->user()->name;
 }

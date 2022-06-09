@@ -6,26 +6,27 @@
         </div>
 
 
-        <form role="form" wire:submit.prevent='addUser()'>
+        <form role="form" wire:submit.prevent='updateUser()''>
             <div class="card-body">
 
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">
                             <label>Nom</label>
-                            <input type="text" class="form-control @error('newUser.name')is-invalid @enderror"  
-                            placeholder="Nom" wire:model='newUser.name'>
-                            @error('newUser.name')
+                            <input type="text" class="form-control @error('editUser.name')is-invalid @enderror"  
+                            placeholder="Nom" wire:model='editUser.name'>
+                            @error('editUser.name')
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
                     </div>
+                    
                     <div class="col-6">
                         <div class="form-group">
                             <label>Prenom</label>
-                            <input type="text" class="form-control @error('newUser.prenom')is-invalid @enderror"  
-                            placeholder="Prenom" wire:model='newUser.prenom'>
-                            @error('newUser.prenom')
+                            <input type="text" class="form-control @error('editUser.prenom')is-invalid @enderror"  
+                            placeholder="Prenom" wire:model='editUser.prenom'>
+                            @error('editUser.prenom')
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
@@ -35,13 +36,13 @@
                 
                 <div class="form-group">
                     <label>Sexe</label>
-                    <select class="form-control @error('newUser.sexe')is-invalid @enderror" 
-                    wire:model='newUser.sexe'>
+                    <select class="form-control @error('editUser.sexe')is-invalid @enderror" 
+                    wire:model='editUser.sexe'>
                         <option value="">---</option>
                         <option value="M">Homme</option>
                         <option value="F">Femme</option>
                     </select>
-                    @error('newUser.sexe')
+                    @error('editUser.sexe')
                         <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>
@@ -49,10 +50,10 @@
 
                 <div class="form-group">
                     <label>Adresse e-mail</label>
-                    <input type="email" class="form-control @error('newUser.email')is-invalid @enderror"  
+                    <input type="email" class="form-control @error('editUser.email')is-invalid @enderror"  
                     placeholder="Enter email " 
-                    wire:model='newUser.email'>
-                    @error('newUser.email')
+                    wire:model='editUser.email'>
+                    @error('editUser.email')
                         <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>
@@ -61,9 +62,9 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label>Téléphone 1 </label>
-                            <input type="text" class="form-control @error('newUser.telephone1') is-invalid @enderror"  
-                            placeholder="telephone 1" wire:model='newUser.telephone1'>
-                            @error('newUser.telephone1')
+                            <input type="text" class="form-control @error('editUser.telephone1') is-invalid @enderror"  
+                            placeholder="telephone 1" wire:model='editUser.telephone1'>
+                            @error('editUser.telephone1')
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
@@ -71,9 +72,9 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label>Téléphone 2 </label>
-                            <input type="text" class="form-control @error('newUser.telephone2')is-invalid @enderror"  
-                            placeholder="Téléphone 2"wire:model='newUser.telephone2'>
-                            @error('newUser.telephone2')
+                            <input type="text" class="form-control @error('editUser.telephone2')is-invalid @enderror"  
+                            placeholder="Téléphone 2"wire:model='editUser.telephone2'>
+                            @error('editUser.telephone2')
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
@@ -82,23 +83,23 @@
 
                 <div class="form-group">
                     <label>Piece d'identité</label>
-                    <select class="form-control @error('newUser.pieceIdentite') is-invalid @enderror" 
-                    wire:model='newUser.pieceIdentite'>
+                    <select class="form-control @error('editUser.pieceIdentite') is-invalid @enderror" 
+                    wire:model='editUser.pieceIdentite'>
                         <option value="">---</option>
                         <option value="Passport">Passport</option>
                         <option value="Permis">Permis</option>
                         <option value="CIN">CIN</option>
                     </select>
-                    @error('newUser.pieceIdentite')
+                    @error('editUser.pieceIdentite')
                         <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>
 
                 <div class="form-group">
                     <label>Numero de piece d'identité</label>
-                    <input type="text" class="form-control @error('newUser.numeroPieceIdentite')is-invalid @enderror" 
-                    wire:model='newUser.numeroPieceIdentite'>
-                    @error('newUser.numeroPieceIdentite')
+                    <input type="text" class="form-control @error('editUser.numeroPieceIdentite')is-invalid @enderror" 
+                    wire:model='editUser.numeroPieceIdentite'>
+                    @error('editUser.numeroPieceIdentite')
                         <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>
@@ -114,19 +115,20 @@
             </div>
 
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                <button type="submit" class="btn btn-primary">Appliquer les modifications</button>
                 <button type="button" class="btn btn-danger float-right"wire:click="goToListUsers()" >Retourner à la liste</button>
             </div> 
         </form>
     </div>
 </div>
+
 <script>
-   window.addEventListener('showSuccessMessage',event=>{
+    window.addEventListener('showSuccesssMessage',event=>{
         Swal.fire({
             postion: 'top-end',
             icon: 'success',
             toast: true,
-            title: 'Opération effectuée avec succè!',
+            title: event.detail.message || 'Opération effectuée avec succè!',
             showConfirmButton: false,
             timer: 3000
         })

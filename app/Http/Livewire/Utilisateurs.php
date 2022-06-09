@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Validation\Rule;
 
 class Utilisateurs extends Component
 {
@@ -12,20 +13,38 @@ class Utilisateurs extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    public $isBtnAddClicked = false;
-
+    //public $isBtnAddClicked = false;
+    public $currentPage = PAGELIST;
     public $newUser = [];
+    public $editUser = [];
 
-    protected $rules = [
-        'newUser.name' => 'required',
-        'newUser.prenom' => 'required',
-        'newUser.sexe' => 'required',
-        'newUser.email' => 'required|email | unique:users,email',
-        'newUser.telephone1' => 'required|numeric',
-        'newUser.telephone2' => 'numeric',
-        'newUser.pieceIdentite' => 'required',
-        'newUser.numeroPieceIdentite' => 'numeric',
-    ];
+    public function rules(){
+        if($this->currentPage == PAGEEDIT){
+            return [
+                'editUser.name' => 'required',
+                'editUser.prenom' => 'required',
+                'editUser.sexe' => 'required',
+                'editUser.email' => ['required','email',Rule::unique('users','email')->ignore($this->editUser['id'])],
+                'editUser.telephone1' => 'required|numeric',
+                'editUser.telephone2' => 'numeric',
+                'editUser.pieceIdentite' => 'required',
+                'editUser.numeroPieceIdentite' => 'numeric',
+            ];
+        }
+        return [
+            'newUser.prenom' => 'required',
+            'newUser.name' => 'required',
+            'newUser.sexe' => 'required',
+            'newUser.email' => ['required','email','unique:users,email'],
+            'newUser.telephone1' => 'required',
+            'newUser.telephone2' => 'numeric',
+            'newUser.pieceIdentite' => 'required',
+            'newUser.numeroPieceIdentite' => 'numeric',
+        ];
+           
+        
+    }
+   
 
     //protected $messages = [
     //    'newUser.nom.required' => 'Le nom est obligatoire.',
@@ -46,15 +65,21 @@ class Utilisateurs extends Component
 
     public function goToAddUser()
     {
-        $this->isBtnAddClicked = true;
+        $this->currentPage = PAGECREATE;
     }
     public function goToListUsers()
     {
-        $this->isBtnAddClicked = false;
+        $this->currentPage = PAGELIST;
+    }
+    public function goToEdittUser($id)
+    {
+        $this->editUser = User::find($id)->toArray();
+        $this->currentPage = PAGEEDIT;
+        
+
     }
     public function addUser()
     {
-
         $validationAttributes = $this->validate();
         $validationAttributes["newUser"]['password'] = 'password';
         $validationAttributes["newUser"]['photo'] = 'photo';
@@ -67,6 +92,7 @@ class Utilisateurs extends Component
             ['message' => 'Utilisateur créé avec succès!']
         );
     }
+
 
     public function confirmDelete($name,$id)
     {
@@ -87,6 +113,18 @@ class Utilisateurs extends Component
         $this->dispatchBrowserEvent(
             'showSuccessMessage',
             ['message' => 'Utilisateur supprimé avec succès!']
+        );
+    }
+
+    public function updateUser(){
+       
+        
+        $validationAttributes = $this->validate();
+        
+        User::find($this->editUser['id'])->update($validationAttributes["editUser"]);
+        $this->dispatchBrowserEvent(
+            'showSuccesssMessage',
+            ['message' => "Utilisateur créé avec succès!"]
         );
     }
 }
