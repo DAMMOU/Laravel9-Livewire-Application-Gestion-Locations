@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Validation\Rule;
@@ -74,8 +75,7 @@ class Utilisateurs extends Component
     public function goToEdittUser($id)
     {
         $this->editUser = User::find($id)->toArray();
-        $this->currentPage = PAGEEDIT;
-        
+        $this->currentPage = PAGEEDIT;    
 
     }
     public function addUser()
@@ -123,8 +123,32 @@ class Utilisateurs extends Component
         
         User::find($this->editUser['id'])->update($validationAttributes["editUser"]);
         $this->dispatchBrowserEvent(
-            'showSuccesssMessage',
+            'showSuccessEditMessage',
             ['message' => "Utilisateur créé avec succès!"]
         );
+    }
+    public function confirmPwdReset()
+    {
+        $this->dispatchBrowserEvent(
+            'showConfirmMessage', [
+            'message' =>[
+                'text' => "Vous etes sur sur le point de réinitialiser 
+                    le mot de passe de". $this->editUser['name']." de la liste des utilisateurs.
+                    Voules-vous continuer?",
+                'title' => "Vous etes sur?",
+                'icon' => "warning",
+                'data' => [
+                'user_id' => $this->editUser['id'],
+                    ]
+        ]]);
+    }
+    public function resetPassword(){
+        User::find($this->editUser['id'])
+        ->update(['password'=>Hash::make(DEFAULTPASSWORD)]);
+        $this->dispatchBrowserEvent(
+            'showSuccessMessage',
+            ['message' => "Le mot de passe a été bien réinitialiser!"]
+        );
+
     }
 }

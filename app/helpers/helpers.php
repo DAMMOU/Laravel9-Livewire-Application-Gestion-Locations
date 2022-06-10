@@ -4,6 +4,7 @@
 define("PAGELIST","liste");
 define("PAGECREATE","create");
 define("PAGEEDIT","edit");
+define("DEFAULTPASSWORD","password");
 
 
 function lastName(){

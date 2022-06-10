@@ -10,7 +10,7 @@
                         <div class="card card-primary card-outline">
 
                             <div class="card-header">
-                                <h5 class="m-0">jlhlb</h5>
+                                <h5 class="m-0">Utilisateurs</h5>
                                 @foreach ( auth()->user()->roles as $role )
                                 <h5 class="m-0">{{$role->nom}} </h5>  
                                 @endforeach
