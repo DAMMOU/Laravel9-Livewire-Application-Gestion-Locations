@@ -2,7 +2,7 @@
     <div class="col-12">
         <div class="card">
 
-            <div class="card-header bg-primary ">
+            <div class="card-header bg-gradient-primary ">
                 <h3 class="card-title d-flex align-items-center">
                 <i class="fas fa-users fa-2x mr-2"></i>
                     Liste des utilisateurs

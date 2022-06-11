@@ -2,11 +2,15 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
 class Utilisateurs extends Component
 {
@@ -18,6 +22,9 @@ class Utilisateurs extends Component
     public $currentPage = PAGELIST;
     public $newUser = [];
     public $editUser = [];
+    public $rolesPermissions = [];
+
+
 
     public function rules(){
         if($this->currentPage == PAGEEDIT){
@@ -41,9 +48,7 @@ class Utilisateurs extends Component
             'newUser.telephone2' => 'numeric',
             'newUser.pieceIdentite' => 'required',
             'newUser.numeroPieceIdentite' => 'numeric',
-        ];
-           
-        
+        ];    
     }
    
 
@@ -55,31 +60,84 @@ class Utilisateurs extends Component
     //protected $validationAttributes = [
     //    'newUser.email' => 'email address'
     //];
-    public function render()
-    {
+    public function render(){
+
+        Carbon::setLocale('fr');
+
         return view('livewire.utilisateurs.index', [
             'users' => User::latest()->paginate(6),
-        ])
-            ->extends('layouts.master')
+        ])->extends('layouts.master')
             ->section('contenu');
     }
 
-    public function goToAddUser()
-    {
+    public function goToAddUser(){
         $this->currentPage = PAGECREATE;
     }
-    public function goToListUsers()
-    {
+
+    public function goToListUsers(){
         $this->currentPage = PAGELIST;
     }
-    public function goToEdittUser($id)
-    {
+
+    public function goToEdittUser($id){
         $this->editUser = User::find($id)->toArray();
         $this->currentPage = PAGEEDIT;    
-
+        $this->populateRolesPermissions();    
     }
-    public function addUser()
-    {
+    public function populateRolesPermissions(){
+       $this->rolesPermissions['roles'] = []; 
+       $this->rolesPermissions['permissions'] = []; 
+
+       $mapForCB = function($value){
+        return $value['id'];
+       };
+
+        $rolesIds = array_map($mapForCB, User::find($this->editUser['id'])->roles->toArray());
+        $permissionIds = array_map($mapForCB, User::find($this->editUser['id'])->permissions->toArray());
+
+        foreach(Role::all() as $role){
+            if(in_array($role->id, $rolesIds)){
+                array_push($this->rolesPermissions['roles'], 
+                ['role_id'=>$role->id, 'role_nom'=>$role->nom, 'active'=>true]);
+            }else{
+                array_push($this->rolesPermissions['roles'], 
+                ['role_id'=>$role->id, 'role_nom'=>$role->nom, 'active'=>false]);
+            }
+        }
+      
+        foreach(Permission::all() as $permission){
+            if(in_array($permission->id, $permissionIds)){
+                array_push($this->rolesPermissions['permissions'], 
+                ['permission_id'=>$permission->id, 'permission_nom'=>$permission->nom, 'active'=>true]);
+            }else{
+                array_push($this->rolesPermissions['permissions'], 
+                ['permission_id'=>$permission->id, 'permission_nom'=>$permission->nom, 'active'=>false]);
+            }
+        }
+        //dump($this->rolesPermissions);
+    }
+    public function updateRolesPermissions(){
+        DB::table("user_role")->where('user_id',$this->editUser['id'])->delete();
+        DB::table("user_permission")->where('user_id',$this->editUser['id'])->delete();
+
+        foreach($this->rolesPermissions['roles']as $role){
+            if($role['active']){
+                User::find($this->editUser['id'])->roles()->attach($role['role_id']);
+            }
+        }
+        foreach($this->rolesPermissions['permissions'] as $permission){
+            if($permission['active']){
+                User::find($this->editUser['id'])->permissions()->attach($permission['permission_id']);
+            }
+        }
+
+        $this->dispatchBrowserEvent(
+            'showSuccessEditMessage',
+            ['message' => "Roles et permissions mis a jour avec succès!"]
+        );
+    }
+
+
+    public function addUser(){
         $validationAttributes = $this->validate();
         $validationAttributes["newUser"]['password'] = 'password';
         $validationAttributes["newUser"]['photo'] = 'photo';
@@ -92,10 +150,7 @@ class Utilisateurs extends Component
             ['message' => 'Utilisateur créé avec succès!']
         );
     }
-
-
-    public function confirmDelete($name,$id)
-    {
+    public function confirmDelete($name,$id){
         $this->dispatchBrowserEvent(
             'showConfirmMessage', [
             'message' =>[
@@ -116,9 +171,10 @@ class Utilisateurs extends Component
         );
     }
 
+
+
+
     public function updateUser(){
-       
-        
         $validationAttributes = $this->validate();
         
         User::find($this->editUser['id'])->update($validationAttributes["editUser"]);
@@ -127,8 +183,11 @@ class Utilisateurs extends Component
             ['message' => "Utilisateur créé avec succès!"]
         );
     }
-    public function confirmPwdReset()
-    {
+
+
+
+
+    public function confirmPwdReset(){
         $this->dispatchBrowserEvent(
             'showConfirmMessage', [
             'message' =>[
